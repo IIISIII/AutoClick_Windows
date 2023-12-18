@@ -42,6 +42,7 @@
             clickPoint.Size = new Size(30, 30);
             clickPoint.TabIndex = 0;
             clickPoint.TabStop = false;
+            clickPoint.MouseClick += SetClickPoint;
             // 
             // BackgroundForm
             // 
@@ -55,7 +56,6 @@
             Opacity = 0.5D;
             Text = "BackgroundForm";
             WindowState = FormWindowState.Maximized;
-            Activated += OnFocusEnter;
             FormClosed += OnClosed;
             MouseClick += SetClickPoint;
             ((System.ComponentModel.ISupportInitialize)clickPoint).EndInit();

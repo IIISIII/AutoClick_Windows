@@ -14,21 +14,23 @@ namespace AutoClick
     {
         private BackgroundForm backgroundForm;
         private Point point;
+        private int keyCode;
         private int childIndex = -1;
         private bool isCloseAll = true;
 
-        public DelaySetForm(BackgroundForm background, Point point, int childIndex)
+        public DelaySetForm(BackgroundForm background, Point point, int keyCode, int childIndex)
         {
 
             InitializeComponent();
             this.backgroundForm = background;
             this.point = point;
+            this.keyCode = keyCode;
             this.childIndex = childIndex;
         }
 
         private void AddClickPoint(object sender, EventArgs e)
         {
-            AutoClickInput input = new AutoClickInput(this.point, Convert.ToInt32(delayInput.Value));
+            AutoClickInput input = new AutoClickInput(this.point, this.keyCode, Convert.ToInt32(delayInput.Value));
 
             if(this.childIndex == -1)
             {

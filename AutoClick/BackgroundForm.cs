@@ -13,6 +13,7 @@ namespace AutoClick
     public partial class BackgroundForm : Form
     {
         private MainForm from;
+        private int keyCode = AutoClickInput.ACTION_LEFT_CLICK;
         private int childIndex = -1;
 
         public BackgroundForm(MainForm from, int childIndex)
@@ -20,26 +21,37 @@ namespace AutoClick
             InitializeComponent();
             this.from = from;
             this.childIndex = childIndex;
-            clickPoint.Hide();
+
+            if(this.childIndex == -1)
+            {
+                clickPoint.Hide();
+            }
+            else
+            {
+                Point location = Program.inputList[this.childIndex].getInputPoint();
+                clickPoint.Location = new Point(location.X - 8, location.Y - 8);
+            }
         }
 
         private void SetClickPoint(object sender, MouseEventArgs e)
         {
-            clickPoint.Location = new Point(e.Location.X - 8, e.Location.Y - 8);
-            clickPoint.Show();
+            if(e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
+            {
+                this.keyCode = e.Button == MouseButtons.Left ? AutoClickInput.ACTION_LEFT_CLICK : AutoClickInput.ACTION_RIGHT_CLICK;
 
-            DelaySetForm delaySetForm = new DelaySetForm(this, e.Location, this.childIndex);
-            delaySetForm.ShowDialog();
+                Point location = Cursor.Position;
+
+                clickPoint.Location = new Point(location.X - 8, location.Y - 8);
+                clickPoint.Show();
+
+                DelaySetForm delaySetForm = new DelaySetForm(this, location, this.keyCode, this.childIndex);
+                delaySetForm.ShowDialog();
+            }
         }
 
         private void OnClosed(object sender, FormClosedEventArgs e)
         {
             this.from.Show();
-        }
-
-        private void OnFocusEnter(object sender, EventArgs e)
-        {
-            clickPoint.Hide();
         }
     }
 }
