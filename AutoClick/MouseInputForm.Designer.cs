@@ -1,6 +1,6 @@
 ﻿namespace AutoClick
 {
-    partial class BackgroundForm
+    partial class MouseInputForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BackgroundForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MouseInputForm));
             clickPoint = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)clickPoint).BeginInit();
             SuspendLayout();

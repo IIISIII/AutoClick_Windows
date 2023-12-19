@@ -12,13 +12,13 @@ namespace AutoClick
 {
     public partial class DelaySetForm : Form
     {
-        private BackgroundForm backgroundForm;
+        private MouseInputForm backgroundForm;
         private Point point;
         private int keyCode;
         private int childIndex = -1;
         private bool isCloseAll = true;
 
-        public DelaySetForm(BackgroundForm background, Point point, int keyCode, int childIndex)
+        public DelaySetForm(MouseInputForm background, Point point, int keyCode, int childIndex)
         {
 
             InitializeComponent();

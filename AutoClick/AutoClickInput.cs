@@ -17,21 +17,24 @@ namespace AutoClick
         // 0 - mouse / 1 - keyboard
         private int inputType = 0;
         private Point inputPoint;
-        private int keyCode;
+        private int mouseInput;
+        private List<KeyGroup> keyGroups = new List<KeyGroup>();
         private int delay = 0;
 
-        public AutoClickInput(Point point, int keyCode, int delay)
+        //mouse
+        public AutoClickInput(Point point, int mouseInput, int delay)
         { 
             this.inputType = 0;
             this.inputPoint = point;
-            this.keyCode = keyCode;
+            this.mouseInput = mouseInput;
             this.delay = delay;
         }
 
-        public AutoClickInput(int keyCode, int delay)
+        //keyboard
+        public AutoClickInput(List<KeyGroup> keyGroups, int delay)
         {
             this.inputType = 1;
-            this.keyCode = keyCode;
+            this.keyGroups = keyGroups;
             this.delay = delay;
         }
 
@@ -45,9 +48,14 @@ namespace AutoClick
             return this.inputPoint;
         }
 
-        public int getKeyCode()
+        public int getMouseInput()
         {
-            return this.keyCode;
+            return this.mouseInput;
+        }
+
+        public List<KeyGroup> getKeyGroups()
+        {
+            return this.keyGroups;
         }
 
         public int getDelay()

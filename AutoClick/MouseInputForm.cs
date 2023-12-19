@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace AutoClick
 {
-    public partial class BackgroundForm : Form
+    public partial class MouseInputForm : Form
     {
         private MainForm from;
         private int keyCode = AutoClickInput.ACTION_LEFT_CLICK;
         private int childIndex = -1;
 
-        public BackgroundForm(MainForm from, int childIndex)
+        public MouseInputForm(MainForm from, int childIndex)
         {
             InitializeComponent();
             this.from = from;

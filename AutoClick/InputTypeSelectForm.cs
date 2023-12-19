@@ -27,7 +27,7 @@ namespace AutoClick
         {
             this.Hide();
 
-            BackgroundForm backgroundForm = new BackgroundForm(this.from, this.childIndex);
+            MouseInputForm backgroundForm = new MouseInputForm(this.from, this.childIndex);
             backgroundForm.ShowDialog();
 
             this.isClickedCloseButton = false;

@@ -1,5 +1,4 @@
 using CustomControls.RJControls;
-using System.Runtime.InteropServices;
 
 namespace AutoClick
 {
@@ -20,17 +19,14 @@ namespace AutoClick
 
         private void ShowPreview(object sender, EventArgs e)
         {
-            //Cursor.Position = Program.point;
-
-            //mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-            //mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+            
         }
 
         private void AddMouseInputPoint(object sender, EventArgs e)
         {
             this.Hide();
 
-            BackgroundForm backgroundForm = new BackgroundForm(this, -1);
+            MouseInputForm backgroundForm = new MouseInputForm(this, -1);
             backgroundForm.ShowDialog();
         }
 
@@ -52,12 +48,23 @@ namespace AutoClick
 
         private void DeleteInput(object sender, EventArgs e)
         {
-
+            if (actionListView.SelectedItems.Count > 0)
+            {
+                Program.inputList.RemoveAt(actionListView.SelectedItems[0].Index);
+                this.refreshActionList(Program.inputList);
+            }
         }
 
         private void OnFocusEnter(object sender, EventArgs e)
         {
-            Console.WriteLine(Program.inputList.Count.ToString());
+            //KeyGroup keyGroup = new KeyGroup();
+            //keyGroup.addKey(0x43);
+
+            //List<KeyGroup> keyGroups = new List<KeyGroup>();
+            //keyGroups.Add(keyGroup);
+
+            //AutoClickInput input = new AutoClickInput(keyGroups, 1000);
+            //Program.inputList.Add(input);
             this.refreshActionList(Program.inputList);
         }
 
@@ -71,10 +78,7 @@ namespace AutoClick
                 String actionName = "";
                 if (action.getInputType() == AutoClickInput.TYPE_MOUSE)
                 {
-                    if (action.getKeyCode() == AutoClickInput.ACTION_LEFT_CLICK)
-                        actionName = "Left Click";
-                    else
-                        actionName = "Right Click";
+                    actionName = MouseEvent.toString(action.getMouseInput());
                 }
                 ListViewItem listViewItem = new ListViewItem(new string[] { i.ToString(), actionName, action.getDelay().ToString() }, -1);
                 this.actionListView.Items.Add(listViewItem);
@@ -106,6 +110,7 @@ namespace AutoClick
                     this.actionThread.stop();
                     this.actionThread = null;
                 }
+                this.timeSelector.enable();
             }
         }
 

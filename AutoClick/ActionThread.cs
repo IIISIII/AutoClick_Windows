@@ -3,26 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 
 namespace AutoClick
 {
     internal class ActionThread
     {
-        [DllImport("user32.dll")]
-        static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo);
-
-        private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;      // The left button is down.
-        private const uint MOUSEEVENTF_LEFTUP = 0x0004;
-        private const uint MOUSEEVENTF_RIGHTDOWN = 0x08;
-        private const uint MOUSEEVENTF_RIGHTUP = 0x10;
-
-
-        private Thread thread;
+        private System.Timers.Timer timer;
 
         private List<AutoClickInput> actionList;
         private int milTime;
         private bool isStopped = true;
+        private bool isRunning = false;
+        private bool isCompleted = true;
 
 
         public ActionThread(List<AutoClickInput> actionList, int milTime)
@@ -30,79 +23,110 @@ namespace AutoClick
             this.actionList = actionList;
             this.milTime = milTime;
 
-            this.thread = new Thread(new ThreadStart(run));
+            this.timer = new System.Timers.Timer();
+            this.timer.Interval = 30000;
+            this.timer.Elapsed += new ElapsedEventHandler(onTimer);
         }
 
         public void start()
         {
             this.isStopped = false;
-            this.thread.Start();
+
+            run();
+            this.timer.Start();
         }
 
         public void stop()
         {
             this.isStopped = true;
-            //this.thread.Abort();
-            this.thread.Join();
+
+            this.timer.Stop();
+        }
+
+        private void onTimer(Object source, ElapsedEventArgs e)
+        {
+            if(!this.isRunning)
+            {
+                run();
+            }
+
+            if(this.isCompleted)
+            {
+                this.isRunning = false;
+            }
         }
 
         private void run()
         {
-            if(!this.isStopped)
-            {
-                while(!this.isStopped)
-                {
-                    int delta = this.getNow() - this.milTime;
-                    if(delta <= 60000 && delta >= 0 && !this.isStopped)
-                    {
-                        this.actionStart(delta);
-                        break;
-                    }
+            int delta = this.milTime - this.getNow();
 
-                    //Thread.Sleep(30000);
-                }
+            if (delta <= 60000 && delta >= 0 && !this.isStopped)
+            {
+                this.actionStart(delta);
             }
         }
 
         private void actionStart(int delta)
         {
-            if(!this.isStopped)
+            this.isCompleted = false;
+            this.isRunning = true;
+
+            if (!this.isStopped)
             {
-                if(delta > 0)
+                Console.WriteLine(delta.ToString());
+                if (delta > 0)
                 {
-                    Console.WriteLine(delta.ToString());
-                    //Thread.Sleep(delta);
+                    Task.Delay(delta).ContinueWith(task => { eventAction(actionList, 0); });
                 }
-                
-                for(int i = 0; i < actionList.Count; i++)
+                else
                 {
-                    if(this.isStopped)
-                    {
-                        break;
-                    }
+                    eventAction(actionList, 0);
+                }
+            }
+            else
+            {
+                this.isCompleted = true;
+            }
+        }
 
-                    AutoClickInput action = actionList[i];
-                    if(action.getInputType() == AutoClickInput.TYPE_MOUSE)
-                    {
-                        Cursor.Position = action.getInputPoint();
+        private void eventAction(List<AutoClickInput> actionList, int index)
+        {
+            if(actionList.Count <= index || this.isStopped)
+            {
+                this.isCompleted = true;
+                return;
+            }
 
-                        if(action.getKeyCode() == AutoClickInput.ACTION_LEFT_CLICK)
-                        {
-                            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                        }
-                        else
-                        {
-                            mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-                            mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
-                        }
-                    }
-                    else
-                    {
-                        // keyvoard action
+            AutoClickInput action = actionList[index];
+            int delay = action.getDelay();
 
-                    }
-                    Thread.Sleep(action.getDelay());
+            if(delay > 0)
+            {
+                Task.Delay(delay).ContinueWith(task => {
+                    doAction(action);
+                    eventAction(actionList, index + 1);
+                });
+            }
+            else
+            {
+                this.doAction(action);
+                this.eventAction(actionList, index + 1);
+            }
+        }
+
+        private void doAction(AutoClickInput action)
+        {
+            if (action.getInputType() == AutoClickInput.TYPE_MOUSE)
+            {
+                MouseEvent.press(action.getInputPoint(), action.getMouseInput() == AutoClickInput.ACTION_LEFT_CLICK);
+            }
+            else
+            {
+                // keyboard action
+                List<KeyGroup> keys = action.getKeyGroups();
+                for(int i = 0; i < keys.Count; i ++)
+                {
+                    KeyboardEvent.press(keys[i]);
                 }
             }
         }
