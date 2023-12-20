@@ -19,7 +19,7 @@ namespace AutoClick
 
         private void ShowPreview(object sender, EventArgs e)
         {
-            
+
         }
 
         private void AddMouseInputPoint(object sender, EventArgs e)
@@ -57,14 +57,26 @@ namespace AutoClick
 
         private void OnFocusEnter(object sender, EventArgs e)
         {
-            //KeyGroup keyGroup = new KeyGroup();
-            //keyGroup.addKey(0x43);
+            KeyGroup keyGroup = new KeyGroup();
+            keyGroup.setPlainText("테스트용");
+            //keyGroup.addKey(0x41);
+            //keyGroup.setDisplay("ㅁ");
 
-            //List<KeyGroup> keyGroups = new List<KeyGroup>();
+            List<KeyGroup> keyGroups = new List<KeyGroup>();
+            keyGroups.Add(keyGroup);
+
+            //keyGroup = new KeyGroup();
+            //keyGroup.addKey(0x4B);
+            //keyGroup.setDisplay("ㅏ");
             //keyGroups.Add(keyGroup);
 
-            //AutoClickInput input = new AutoClickInput(keyGroups, 1000);
-            //Program.inputList.Add(input);
+            //keyGroup = new KeyGroup();
+            //keyGroup.addKey(0x41);
+            //keyGroup.setDisplay("ㅁ");
+            //keyGroups.Add(keyGroup);
+
+            AutoClickInput input = new AutoClickInput(keyGroups, 1000);
+            Program.inputList.Add(input);
             this.refreshActionList(Program.inputList);
         }
 
@@ -80,6 +92,10 @@ namespace AutoClick
                 {
                     actionName = MouseEvent.toString(action.getMouseInput());
                 }
+                else
+                {
+                    actionName = KeyGroup.toString(action.getKeyGroups());
+                }
                 ListViewItem listViewItem = new ListViewItem(new string[] { i.ToString(), actionName, action.getDelay().ToString() }, -1);
                 this.actionListView.Items.Add(listViewItem);
             }
@@ -88,24 +104,24 @@ namespace AutoClick
         private void OnCheckedChanged(object sender, EventArgs e)
         {
             RJToggleButton toggle = (RJToggleButton)sender;
-            
+
             List<AutoClickInput> actionList = Program.inputList;
-            
-            if(actionList.Count == 0)
+
+            if (actionList.Count == 0)
             {
                 toggle.Checked = false;
                 return;
             }
 
-            if(toggle.Checked)
+            if (toggle.Checked)
             {
-                this.actionThread = new ActionThread(actionList, this.timeToMilSec(timeSelector.getHour(), timeSelector.getMinute(), timeSelector.getSecond()));
+                this.actionThread = new ActionThread(actionList, TimeSelector.timeToMilSec(timeSelector.getHour(), timeSelector.getMinute(), timeSelector.getSecond()));
                 this.actionThread.start();
                 this.timeSelector.disable();
             }
             else
             {
-                if(this.actionThread != null)
+                if (this.actionThread != null)
                 {
                     this.actionThread.stop();
                     this.actionThread = null;
@@ -114,12 +130,9 @@ namespace AutoClick
             }
         }
 
-        private int timeToMilSec(int hour, int minute, int second)
+        private void InitTimeToNow(object sender, EventArgs e)
         {
-            int milSec = second * 1000;
-            int milMin = minute * 1000 * 60;
-            int milHour = hour * 1000 * 60 * 60;
-            return milHour + milMin + milSec;
+            this.timeSelector.initToNow();
         }
     }
 }

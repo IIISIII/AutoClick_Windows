@@ -122,27 +122,20 @@ namespace AutoClick
             }
             else
             {
-                // keyboard action
                 List<KeyGroup> keys = action.getKeyGroups();
                 for(int i = 0; i < keys.Count; i ++)
                 {
                     KeyboardEvent.press(keys[i]);
                 }
             }
+
+            //Console.WriteLine(KeyboardState.isEnglish().ToString());
         }
 
         private int getNow()
         {
             DateTime now = DateTime.Now;
-            return this.timeToMilSec(now.Hour, now.Minute, now.Second);
-        }
-
-        private int timeToMilSec(int hour, int minute, int second)
-        {
-            int milSec = second * 1000;
-            int milMin = minute * 1000 * 60;
-            int milHour = hour * 1000 * 60 * 60;
-            return milHour + milMin + milSec;
+            return TimeSelector.timeToMilSec(now.Hour, now.Minute, now.Second);
         }
     }
 }

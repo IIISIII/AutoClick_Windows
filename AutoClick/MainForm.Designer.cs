@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
+            initNowButton = new Button();
             timeSelector = new TimeSelector();
             button2 = new Button();
             actionListView = new ListView();
@@ -50,15 +51,27 @@
             // 
             groupBox1.AutoSize = true;
             groupBox1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            groupBox1.Controls.Add(initNowButton);
             groupBox1.Controls.Add(timeSelector);
             groupBox1.Font = new Font("맑은 고딕", 12F);
             groupBox1.Location = new Point(23, 323);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(20, 20, 20, 5);
-            groupBox1.Size = new Size(399, 147);
+            groupBox1.Size = new Size(399, 194);
             groupBox1.TabIndex = 7;
             groupBox1.TabStop = false;
             groupBox1.Text = "시간 예약";
+            // 
+            // initNowButton
+            // 
+            initNowButton.Font = new Font("맑은 고딕", 8F);
+            initNowButton.Location = new Point(20, 130);
+            initNowButton.Name = "initNowButton";
+            initNowButton.Size = new Size(80, 29);
+            initNowButton.TabIndex = 1;
+            initNowButton.Text = "현재시간";
+            initNowButton.UseVisualStyleBackColor = true;
+            initNowButton.Click += InitTimeToNow;
             // 
             // timeSelector
             // 
@@ -103,7 +116,7 @@
             // action
             // 
             action.Text = "동작";
-            action.Width = 120;
+            action.Width = 180;
             // 
             // delay
             // 
@@ -156,7 +169,7 @@
             // 
             // rjToggleButton1
             // 
-            rjToggleButton1.Location = new Point(344, 486);
+            rjToggleButton1.Location = new Point(344, 541);
             rjToggleButton1.MinimumSize = new Size(45, 22);
             rjToggleButton1.Name = "rjToggleButton1";
             rjToggleButton1.OffBackColor = Color.Gray;
@@ -172,7 +185,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("맑은 고딕", 12F);
-            label1.Location = new Point(219, 490);
+            label1.Location = new Point(219, 545);
             label1.Name = "label1";
             label1.Size = new Size(119, 28);
             label1.TabIndex = 12;
@@ -181,7 +194,7 @@
             // button6
             // 
             button6.Font = new Font("맑은 고딕", 12F);
-            button6.Location = new Point(23, 541);
+            button6.Location = new Point(23, 596);
             button6.Name = "button6";
             button6.Size = new Size(101, 40);
             button6.TabIndex = 10;
@@ -191,7 +204,7 @@
             // button7
             // 
             button7.Font = new Font("맑은 고딕", 12F);
-            button7.Location = new Point(142, 541);
+            button7.Location = new Point(142, 596);
             button7.Name = "button7";
             button7.Size = new Size(101, 40);
             button7.TabIndex = 10;
@@ -205,7 +218,7 @@
             AutoScroll = true;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(458, 608);
+            ClientSize = new Size(458, 691);
             Controls.Add(label1);
             Controls.Add(rjToggleButton1);
             Controls.Add(button3);
@@ -244,5 +257,6 @@
         private Label label1;
         private Button button6;
         private Button button7;
+        private Button initNowButton;
     }
 }

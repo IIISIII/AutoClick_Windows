@@ -79,5 +79,13 @@ namespace AutoClick
             minuteUpDown.Enabled = true;
             secondUpDown.Enabled = true;
         }
+
+        public static int timeToMilSec(int hour,  int minute, int second)
+        {
+            int milSec = second * 1000;
+            int milMin = minute * 1000 * 60;
+            int milHour = hour * 1000 * 60 * 60;
+            return milHour + milMin + milSec;
+        }
     }
 }
