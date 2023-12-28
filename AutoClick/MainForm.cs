@@ -57,13 +57,13 @@ namespace AutoClick
 
         private void OnFocusEnter(object sender, EventArgs e)
         {
-            KeyGroup keyGroup = new KeyGroup();
-            keyGroup.setPlainText("테스트용");
+            //KeyGroup keyGroup = new KeyGroup();
+            //keyGroup.setPlainText("테스트용");
             //keyGroup.addKey(0x41);
             //keyGroup.setDisplay("ㅁ");
 
-            List<KeyGroup> keyGroups = new List<KeyGroup>();
-            keyGroups.Add(keyGroup);
+            //List<KeyGroup> keyGroups = new List<KeyGroup>();
+            //keyGroups.Add(keyGroup);
 
             //keyGroup = new KeyGroup();
             //keyGroup.addKey(0x4B);
@@ -75,8 +75,8 @@ namespace AutoClick
             //keyGroup.setDisplay("ㅁ");
             //keyGroups.Add(keyGroup);
 
-            AutoClickInput input = new AutoClickInput(keyGroups, 1000);
-            Program.inputList.Add(input);
+            //AutoClickInput input = new AutoClickInput(keyGroups, 1000);
+            //Program.inputList.Add(input);
             this.refreshActionList(Program.inputList);
         }
 
